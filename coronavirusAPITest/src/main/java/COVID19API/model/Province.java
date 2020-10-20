@@ -5,7 +5,15 @@ public class Province {
     private int num_deaths;
     private int num_infected;
     private int num_cured;
+    private String city;
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     public Province() {
     }

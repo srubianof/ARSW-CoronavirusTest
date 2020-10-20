@@ -1,20 +1,14 @@
 package COVID19API.services.impl;
 
-import COVID19API.model.Case;
-import COVID19API.model.Country;
-import COVID19API.model.Province;
-import COVID19API.model.World;
-import COVID19API.services.CoronavirusStatServicesI;
-import COVID19API.services.HttpConnectionServicesI;
+import COVID19API.model.*;
+import COVID19API.services.*;
 import com.google.gson.Gson;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.json.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -54,6 +48,7 @@ public class CoronavirusStatServices implements CoronavirusStatServicesI {
                             death.addAndGet(country1.getDeaths());
                             infected.addAndGet(country1.getConfirmed());
                             cured.addAndGet(recovered);
+                            province.setCity(country1.getCity());
                             province.setNum_cured(recovered);
                             province.setNum_deaths(country1.getDeaths());
                             province.setNum_infected(country1.getConfirmed());
