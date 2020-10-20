@@ -28,7 +28,15 @@ public class CoronavirusStatServices implements CoronavirusStatServicesI {
                 if (aCase.getRecovered() != null) {
                     recovered = aCase.getRecovered();
                 }
-                world.addCountry(new Country(aCase.getCountry(), aCase.getDeaths(), aCase.getConfirmed(), recovered));
+                System.out.println(aCase.getCountry());
+                JSONArray coords = null;
+                try {
+                    coords = httpConnectionService.getLocationCountry(aCase.getCountry());
+                } catch (UnirestException e) {
+                    world.addCountry(new Country(aCase.getCountry(), aCase.getDeaths(), aCase.getConfirmed(), recovered, new Location(0, 0)));
+
+                }
+                world.addCountry(new Country(aCase.getCountry(), aCase.getDeaths(), aCase.getConfirmed(), recovered, new Location(coords.getDouble(0), coords.getDouble(1))));
             } else {
 
                 Country country = new Country();
@@ -58,6 +66,9 @@ public class CoronavirusStatServices implements CoronavirusStatServicesI {
                     country.setNum_deaths(death.get());
                     country.setNum_infected(infected.get());
                     country.setNum_cured(cured.get());
+                    Gson gson = new Gson();
+                    JSONArray coords = httpConnectionService.getLocationCountry(aCase.getCountry());
+                    country.setLocation(new Location(coords.getDouble(0), coords.getDouble(1)));
                     world.addCountry(country);
                 }
             }

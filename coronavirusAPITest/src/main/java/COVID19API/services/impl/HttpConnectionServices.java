@@ -2,9 +2,9 @@ package COVID19API.services.impl;
 
 import COVID19API.services.HttpConnectionServicesI;
 import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -32,11 +32,11 @@ public class HttpConnectionServices implements HttpConnectionServicesI {
     }
 
     @Override
-    public JSONObject getLocationCountry(String country) throws UnirestException {
-        HttpResponse<String> response = Unirest.get("https://rapidapi.p.rapidapi.com/name/"+country)
+    public JSONArray getLocationCountry(String place) throws UnirestException {
+        HttpResponse<String> response = Unirest.get("https://rapidapi.p.rapidapi.com/name/"+place)
                 .header("x-rapidapi-host", "restcountries-v1.p.rapidapi.com")
                 .header("x-rapidapi-key", "619071a7efmshb6032a61efc2419p1df555jsnc91fcb67cc39")
                 .asString();
-        return new JSONObject(response.getBody()).getJSONObject("latlng");
+        return new JSONArray(response.getBody()).getJSONObject(0).getJSONArray("latlng");
     }
 }

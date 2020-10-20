@@ -8,17 +8,26 @@ public class Country {
     private int num_deaths = 0;
     private int num_infected = 0;
     private int num_cured = 0;
-    private Location location = new Location(0,0);
+    private Location location = new Location(0, 0);
     private List<Province> provinces = new ArrayList<>();
 
-    public Country(String name, int num_deaths, int num_infected, int num_cured) {
+    public Country(String name, int num_deaths, int num_infected, int num_cured, Location location) {
         this.name = name;
         this.num_deaths = num_deaths;
         this.num_infected = num_infected;
         this.num_cured = num_cured;
+        this.location = location;
     }
 
     public Country() {
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public List<Province> getProvinces() {
