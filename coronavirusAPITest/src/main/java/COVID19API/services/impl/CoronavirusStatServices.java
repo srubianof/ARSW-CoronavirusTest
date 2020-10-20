@@ -39,6 +39,9 @@ public class CoronavirusStatServices implements CoronavirusStatServicesI {
 
                 Country country = new Country();
                 if (world.getCountries().stream().map(Country::getName).noneMatch(aCase.getCountry()::equals)) {
+                    AtomicInteger death = new AtomicInteger(0);
+                    AtomicInteger infected = new AtomicInteger(0);
+                    AtomicInteger cured = new AtomicInteger(0);
                     country.setName(aCase.getCountry());
                     cases.forEach(country1 -> {
                         int recovered = 0;
@@ -48,12 +51,18 @@ public class CoronavirusStatServices implements CoronavirusStatServicesI {
                             if (country1.getRecovered() != null) {
                                 recovered = (country1.getRecovered());
                             }
+                            death.addAndGet(country1.getDeaths());
+                            infected.addAndGet(country1.getConfirmed());
+                            cured.addAndGet(recovered);
                             province.setNum_cured(recovered);
                             province.setNum_deaths(country1.getDeaths());
                             province.setNum_infected(country1.getConfirmed());
                             country.addProvince(province);
                         }
                     });
+                    country.setNum_deaths(death.get());
+                    country.setNum_infected(infected.get());
+                    country.setNum_cured(cured.get());
                     world.addCountry(country);
                 }
             }
