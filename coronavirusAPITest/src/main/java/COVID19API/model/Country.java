@@ -1,9 +1,10 @@
 package COVID19API.model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
-public class Country {
+public class Country implements Comparable<Country> {
     private String name;
     private int num_deaths = 0;
     private int num_infected = 0;
@@ -72,5 +73,13 @@ public class Country {
 
     public void addProvince(Province province) {
         this.provinces.add(province);
+    }
+
+    @Override
+    public int compareTo(Country o) {
+        int result = Comparator.comparing(Country::getNum_deaths).reversed()
+                .thenComparing(Country::getNum_infected).reversed()
+                .thenComparing(Country::getNum_cured).reversed().compare(this, o);
+        return result;
     }
 }

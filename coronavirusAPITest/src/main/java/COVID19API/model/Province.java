@@ -7,6 +7,14 @@ public class Province {
     private int num_cured;
     private String city;
 
+    public Province(String name, int num_deaths, int num_infected, int num_cured, String city) {
+        this.name = name;
+        this.num_deaths = num_deaths;
+        this.num_infected = num_infected;
+        this.num_cured = num_cured;
+        this.city = city;
+    }
+
     public String getCity() {
         return city;
     }
@@ -15,8 +23,6 @@ public class Province {
         this.city = city;
     }
 
-    public Province() {
-    }
 
     public String getName() {
         return name;

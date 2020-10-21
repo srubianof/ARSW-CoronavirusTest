@@ -8,6 +8,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class HttpConnectionServices implements HttpConnectionServicesI {
 
@@ -37,6 +39,9 @@ public class HttpConnectionServices implements HttpConnectionServicesI {
                 .header("x-rapidapi-host", "restcountries-v1.p.rapidapi.com")
                 .header("x-rapidapi-key", "619071a7efmshb6032a61efc2419p1df555jsnc91fcb67cc39")
                 .asString();
+        if (response.getBody().contains("404")){
+            return new JSONArray();
+        }
         return new JSONArray(response.getBody()).getJSONObject(0).getJSONArray("latlng");
     }
 }

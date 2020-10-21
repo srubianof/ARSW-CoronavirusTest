@@ -34,13 +34,13 @@ public class CoronaviusStatsController {
 
     @GetMapping("stats")
     public ResponseEntity<?> getCasesByCountry(@RequestParam String country) {
-        List<Country> cases = new ArrayList<>();
+        Country cases = null;
         try {
             cases = coronavirusStatServices.getCasesByCountry(country);
         } catch (UnirestException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<List<Country>>(cases, HttpStatus.OK);
+        return new ResponseEntity<Country>(cases, HttpStatus.OK);
     }
 }

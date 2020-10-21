@@ -8,5 +8,5 @@ import java.util.*;
 public interface CoronavirusStatServicesI {
     List<Country> getAllCases() throws UnirestException;
 
-    List<Country> getCasesByCountry(String country) throws UnirestException;
+    Country getCasesByCountry(String country) throws UnirestException;
 }

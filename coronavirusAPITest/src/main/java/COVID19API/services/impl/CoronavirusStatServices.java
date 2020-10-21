@@ -28,17 +28,9 @@ public class CoronavirusStatServices implements CoronavirusStatServicesI {
                 if (aCase.getRecovered() != null) {
                     recovered = aCase.getRecovered();
                 }
-                System.out.println(aCase.getCountry());
-                JSONArray coords = null;
-                try {
-                    coords = httpConnectionService.getLocationCountry(aCase.getCountry());
-                } catch (UnirestException e) {
-                    world.addCountry(new Country(aCase.getCountry(), aCase.getDeaths(), aCase.getConfirmed(), recovered, new Location(0, 0)));
+                world.addCountry(new Country(aCase.getCountry(), aCase.getDeaths(), aCase.getConfirmed(), recovered, new Location(0, 0)));
 
-                }
-                world.addCountry(new Country(aCase.getCountry(), aCase.getDeaths(), aCase.getConfirmed(), recovered, new Location(coords.getDouble(0), coords.getDouble(1))));
             } else {
-
                 Country country = new Country();
                 if (world.getCountries().stream().map(Country::getName).noneMatch(aCase.getCountry()::equals)) {
                     AtomicInteger death = new AtomicInteger(0);
@@ -48,39 +40,44 @@ public class CoronavirusStatServices implements CoronavirusStatServicesI {
                     cases.forEach(country1 -> {
                         int recovered = 0;
                         if (country1.getCountry().equals(aCase.getCountry())) {
-                            Province province = new Province();
-                            province.setName(country1.getProvince());
                             if (country1.getRecovered() != null) {
                                 recovered = (country1.getRecovered());
                             }
+                            Province province = new Province(country1.getProvince(), country1.getDeaths(), country1.getConfirmed(), recovered, country1.getCity());
                             death.addAndGet(country1.getDeaths());
                             infected.addAndGet(country1.getConfirmed());
                             cured.addAndGet(recovered);
-                            province.setCity(country1.getCity());
-                            province.setNum_cured(recovered);
-                            province.setNum_deaths(country1.getDeaths());
-                            province.setNum_infected(country1.getConfirmed());
                             country.addProvince(province);
                         }
                     });
                     country.setNum_deaths(death.get());
                     country.setNum_infected(infected.get());
                     country.setNum_cured(cured.get());
-                    Gson gson = new Gson();
-                    JSONArray coords = httpConnectionService.getLocationCountry(aCase.getCountry());
-                    country.setLocation(new Location(coords.getDouble(0), coords.getDouble(1)));
                     world.addCountry(country);
                 }
             }
-
         }
+        Collections.sort(world.getCountries());
         return world.getCountries();
     }
 
     @Override
-    public List<Country> getCasesByCountry(String country) throws UnirestException {
+    public Country getCasesByCountry(String country) throws UnirestException {
+        List<Country> countries = this.getAllCases().stream().filter(country1 -> country1.getName().equals(country)).collect(Collectors.toList());
         System.out.println(country);
-        return this.getAllCases().stream().filter(country1 -> country1.getName().equals(country)).collect(Collectors.toList());
+        countries.forEach(country1 -> {
+            JSONArray coords = null;
+            try {
+                System.out.println(country1.getName());
+                coords = httpConnectionService.getLocationCountry(country1.getName());
+                System.out.println(coords);
+            } catch (UnirestException e) {
+                e.printStackTrace();
+            }
+            assert coords != null;
+            country1.setLocation(new Location(coords.getDouble(0), coords.getDouble(1)));
+        });
+        return countries.get(0);
     }
 
     private List<Case> getCases(ArrayList<Case> cases, JSONArray jsonArray) {
