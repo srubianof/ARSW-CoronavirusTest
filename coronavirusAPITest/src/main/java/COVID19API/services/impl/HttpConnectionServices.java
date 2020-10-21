@@ -35,11 +35,12 @@ public class HttpConnectionServices implements HttpConnectionServicesI {
 
     @Override
     public JSONArray getLocationCountry(String place) throws UnirestException {
-        HttpResponse<String> response = Unirest.get("https://rapidapi.p.rapidapi.com/name/"+place)
+        if (place.equals("US")) place = "USA";
+        HttpResponse<String> response = Unirest.get("https://rapidapi.p.rapidapi.com/name/" + place)
                 .header("x-rapidapi-host", "restcountries-v1.p.rapidapi.com")
                 .header("x-rapidapi-key", "619071a7efmshb6032a61efc2419p1df555jsnc91fcb67cc39")
                 .asString();
-        if (response.getBody().contains("404")){
+        if (response.getBody().contains("404")) {
             return new JSONArray();
         }
         return new JSONArray(response.getBody()).getJSONObject(0).getJSONArray("latlng");
