@@ -1,0 +1,22 @@
+name: PR Review Slack Notify
+on:
+  pull_request:
+    types: [opened, ready_for_review]
+  pull_request_review:
+    types: [submitted]
+  push:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    name: PR Review Slack Notify
+    steps:
+      - name: Send slack notifications to requested reviewers
+        id: pr-slack-notify
+        uses: mlg87/pr-reviewer-slack-notify-action@v4.0.8
+        with:
+          base-branch: "master"
+          bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
+          channel-id: "C02LACLJZRT"
+          github-token: ${{ secrets.GH_TOKEN }}
+          slack-users: '[{ "github_username": "Thebiglord16", "slack_id": "U02L6LB2X8W" }.{ "github_username": "srubianof", "slack_id": "U02L6L5UZP0" }]'
