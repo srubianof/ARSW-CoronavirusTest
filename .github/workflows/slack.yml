@@ -19,4 +19,4 @@ jobs:
           bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
           channel-id: "C02LACLJZRT"
           github-token: ${{ secrets.GH_TOKEN }}
-          slack-users: '[{ "github_username": "Thebiglord16", "slack_id": "U02L6LB2X8W" }.{ "github_username": "srubianof", "slack_id": "U02L6L5UZP0" }]'
+          slack-users: '[{ "github_username": "Thebiglord16", "slack_id": "U02L6LB2X8W" },{ "github_username": "srubianof", "slack_id": "U02L6L5UZP0" }]'
