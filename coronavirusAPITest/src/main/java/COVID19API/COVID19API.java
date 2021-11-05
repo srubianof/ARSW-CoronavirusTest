@@ -8,7 +8,7 @@ public class COVID19API {
 
     public static void main(String[] args) {
         SpringApplication.run(COVID19API.class, args);
-        System.out.println("HOLA");
+        System.out.println("ADIOS");
     }
 
 }
